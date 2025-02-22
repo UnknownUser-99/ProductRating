@@ -25,17 +25,19 @@ namespace ProductRating.Services.ProductRecognition
 
             float maxScore = result.Score.Max();
 
+            /*
             RecognitionConfidenceType confidence = maxScore switch
             {
                 float score when score >= _options.HighConfidence => RecognitionConfidenceType.High,
                 float score when score >= _options.MediumConfidence => RecognitionConfidenceType.Medium,
                 float score when score < _options.LowConfidence => RecognitionConfidenceType.Low,
             };
+            */
 
             return new RecognitionResult
             {
                 Product = int.Parse(result.PredictedLabel),
-                Confidence = confidence
+                Confidence = result.Score.Max()
             };
         }
     }

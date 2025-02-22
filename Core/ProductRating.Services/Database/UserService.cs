@@ -13,21 +13,19 @@ namespace ProductRating.Services.Database
             _context = context;
         }
 
-        public async Task<int> AddUserAsync(int phone, string name, string password, string email = null)
+        public async Task<int> AddUserAsync(int phone, string name, string password)
         {
             User user = new User
             {
                 Name = name,
                 Phone = phone,
-                Email = email,
                 Password = password
             };
 
             UserHistory userHistory = new UserHistory
             {
                 User = user.Id,
-                Operation = UserOperationType.Register.ToString(),
-                Date = DateTime.UtcNow
+                Operation = UserOperationType.Register.ToString()
             };
 
             _context.Users.Add(user);

@@ -50,7 +50,8 @@ namespace ProductRating.Services.ProductRecognition
 
         #endregion
 
-        private static string MLNetModelPath = Path.GetFullPath("MLProductRecognition.mlnet");
+        //private static string MLNetModelPath = Path.GetFullPath("MLProductRecognition.mlnet");
+        private static string MLNetModelPath = @"F:\Проекты\ProductRating\Core\ProductRating.Services\ProductRecognition\MLProductRecognition.mlnet";
 
         public static readonly Lazy<PredictionEngine<ModelInput, ModelOutput>> PredictEngine = new Lazy<PredictionEngine<ModelInput, ModelOutput>>(() => CreatePredictEngine(), true);
 
