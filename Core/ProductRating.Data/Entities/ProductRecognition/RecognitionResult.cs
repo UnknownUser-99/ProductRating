@@ -3,6 +3,6 @@
     public record RecognitionResult
     {
         public int Product { get; init; }
-        public RecognitionConfidenceType Confidence { get; init; }
+        public float Confidence { get; init; }
     }
 }
