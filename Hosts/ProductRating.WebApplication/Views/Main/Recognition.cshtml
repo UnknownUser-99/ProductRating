@@ -1,2 +1,18 @@
-﻿<h2>Распознавание</h2>
-<p>Раснознавание продуктов</p>
+﻿<div class="recognition-page fade-in">
+    <div id="imageContainer">
+        <div id="imagePreview" class="image-preview">
+            <p class="placeholder-text">Загрузите изображение</p>
+        </div>
+        <div class="upload-button">
+            <label for="imageUpload" class="custom-file-upload">Выбрать файл</label>
+            <input type="file" id="imageUpload" accept="image/*">
+        </div>
+    </div>
+
+    <div id="resultContainer">
+        <h2 class="result-header">Результат распознавания</h2>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/recognition.css" asp-append-version="true">
+<script src="~/js/recognition.js" asp-append-version="true"></script>
