@@ -1,10 +1,12 @@
 using ProductRating.Contracts.Authorization;
 using ProductRating.Contracts.Database;
+using ProductRating.Contracts.DTO;
 using ProductRating.Contracts.ProductRecognition;
 using ProductRating.Data.Configurations;
 using ProductRating.Data.Entities.Database;
 using ProductRating.Services.Authorization;
 using ProductRating.Services.Database;
+using ProductRating.Services.DTO;
 using ProductRating.Services.ProductRecognition;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,10 +28,12 @@ namespace ProductRating.WebAPI
                 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IProductRecognitionService, ProductRecognitionService>();
-            builder.Services.AddScoped<IHashService, HashService>();
             builder.Services.AddScoped<IJWTService, JWTService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+
+            builder.Services.AddSingleton<IHashService, HashService>();
+            builder.Services.AddSingleton<IProductRecognitionDTOService, ProductRecognitionDTOService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();

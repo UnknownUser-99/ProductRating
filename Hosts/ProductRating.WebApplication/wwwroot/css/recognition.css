@@ -1,0 +1,126 @@
+﻿.recognition-page {
+    background-color: #f5f7fa;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    gap: 40px;
+    width: auto;
+    max-width: 100%;
+}
+
+#imageContainer {
+    display: inline-block;
+}
+
+.image-preview {
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.placeholder-text {
+    color: #999;
+    font-size: 14px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.upload {
+    display: flex;
+    justify-content: center;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-button {
+    padding: 10px 10px;
+    background-color: #3b4b60;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s;
+}
+
+.upload-button:hover {
+    background-color: #4a5b72;
+}
+
+.recognize-button {
+    padding: 10px 10px;
+    background-color: #3b4b60;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s;
+}
+
+.recognize-button:hover {
+    background-color: #4a5b72;
+}
+
+#resultContainer {
+    flex: 1;
+}
+
+.result-header {
+    font-size: 20px;
+    color: #333;
+    text-align: left;
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+.result-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+.info-container {
+    flex: 1;
+    margin-left: 20px;
+    margin-top: 0;
+}
+
+.info-container p {
+    margin-bottom: 5px;
+}
+
+.image-container {
+    width: 320px;
+    height: 320px;
+    border-radius: 10px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-image {
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+}

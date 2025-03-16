@@ -1,0 +1,48 @@
+﻿@model RecognitionModel
+
+<div class="recognition-page fade-in">
+    <div id="imageContainer">
+        <div id="imagePreview" class="image-preview">
+            <p class="placeholder-text">Загрузите изображение</p>
+        </div>
+
+        <div class="buttons">
+            <div class="upload">
+                <label for="imageUpload" class="upload-button">Загрузить</label>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+
+            <form method="post" enctype="multipart/form-data" asp-action="Recognize" asp-controller="Recognition">
+                <button type="submit" class="recognize-button">Распознать</button>
+            </form>
+        </div>
+    </div>
+
+    @if (Model != null)
+    {
+        <div id="resultContainer">
+            <h2 class="result-header">Результат распознавания</h2>
+
+            <div class="result-content">
+                <div class="image-container">
+                    <img src="@Model.Image" alt="Изображение товара" class="product-image" />
+                </div>
+
+                <div class="info-container">
+                    <h3>Информация о товаре:</h3>
+                    <p>Товар: @Model.Product</p>
+                    <p>Бренд: @Model.Brand</p>
+                    <p>Тип: @Model.Type</p>
+                    <h3>Рейтинг товара:</h3>
+                    <p>Общий рейтинг: @Model.OverallRating</p>
+                    <p>Годичный рейтинг: @Model.YearlyRating</p>
+                    <p>Месячный рейтинг: @Model.MonthlyRating</p>
+                    <p>Уверенность: @Model.Confidence</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/recognition.css" asp-append-version="true">
+<script src="~/js/recognition.js" asp-append-version="true"></script>
