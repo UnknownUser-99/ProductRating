@@ -5,6 +5,7 @@ namespace ProductRating.Data.Entities.Database
     public class PRDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<UserHistory> UserHistory { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
@@ -40,11 +41,28 @@ namespace ProductRating.Data.Entities.Database
                     .HasMaxLength(60);
                 entity.Property(u => u.Password)
                     .IsRequired();
+                entity.Property(u => u.Role)
+                    .IsRequired()
+                    .HasDefaultValue((int)UserRoleType.User);
+
+                entity.HasOne<UserRole>()
+                    .WithMany()
+                    .HasForeignKey(u => u.Role);
 
                 entity.HasIndex(u => u.Phone)
                     .IsUnique();
                 entity.HasIndex(u => u.Email)
                     .IsUnique();
+            });
+
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.ToTable("UserRoles");
+                entity.HasKey(ur => ur.Id);
+
+                entity.Property(ur => ur.Name)
+                    .IsRequired()
+                    .HasMaxLength(30);
             });
 
             modelBuilder.Entity<UserHistory>(entity =>
