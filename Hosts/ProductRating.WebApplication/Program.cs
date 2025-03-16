@@ -1,3 +1,5 @@
+using ProductRating.Data.Configurations;
+
 namespace ProductRating.WebApplication
 {
     public class Program
@@ -6,7 +8,11 @@ namespace ProductRating.WebApplication
         {
             var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
+            builder.Services.Configure<MainControllerOptions>(builder.Configuration.GetSection("Configurations:MainController"));
+            builder.Services.Configure<RecognitionControllerOptions>(builder.Configuration.GetSection("Configurations:RecognitionController"));
+
             builder.Services.AddControllersWithViews();
+            builder.Services.AddHttpClient();
 
             var app = builder.Build();
 

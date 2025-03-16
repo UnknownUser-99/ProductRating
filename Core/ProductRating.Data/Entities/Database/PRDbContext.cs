@@ -78,6 +78,8 @@ namespace ProductRating.Data.Entities.Database
                     .IsRequired();
                 entity.Property(p => p.Brand)
                     .IsRequired();
+                entity.Property(p => p.Image)
+                    .IsRequired();
 
                 entity.HasOne<ProductType>()
                     .WithMany()

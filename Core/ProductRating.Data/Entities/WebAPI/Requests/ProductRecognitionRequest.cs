@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace ProductRating.Data.Entities.WebAPI.Requests
 {
     public record ProductRecognitionRequest
