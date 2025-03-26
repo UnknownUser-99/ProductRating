@@ -13,26 +13,31 @@ namespace ProductRating.WebApplication.Controllers
             _options = options.Value;
         }
 
+        [HttpGet]
         public ActionResult Main()
         {
             return View();
         }
 
+        [HttpGet]
         public ActionResult Profile()
         {
             return PartialView("Profile");
         }
 
+        [HttpGet]
         public ActionResult Recognition()
         {
             return PartialView(_options.RecognitionView);
         }
 
+        [HttpGet]
         public ActionResult Reviews()
         {
             return PartialView("Reviews");
         }
 
+        [HttpGet]
         public ActionResult Products()
         {
             return PartialView("Products");

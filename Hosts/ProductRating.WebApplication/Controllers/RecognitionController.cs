@@ -20,6 +20,7 @@ namespace ProductRating.WebApplication.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return PartialView();

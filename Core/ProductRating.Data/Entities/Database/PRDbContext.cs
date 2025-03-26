@@ -36,7 +36,8 @@ namespace ProductRating.Data.Entities.Database
                     .IsRequired()
                     .HasMaxLength(30);
                 entity.Property(u => u.Phone)
-                    .IsRequired();
+                    .IsRequired()
+                    .HasMaxLength(15);
                 entity.Property(u => u.Email)
                     .HasMaxLength(60);
                 entity.Property(u => u.Password)
@@ -73,8 +74,7 @@ namespace ProductRating.Data.Entities.Database
                 entity.Property(uh => uh.User)
                     .IsRequired();
                 entity.Property(uh => uh.Operation)
-                    .IsRequired()
-                    .HasMaxLength(30);
+                    .IsRequired();
                 entity.Property(uh => uh.Date)
                     .IsRequired()
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
@@ -82,6 +82,19 @@ namespace ProductRating.Data.Entities.Database
                 entity.HasOne<User>()
                     .WithMany()
                     .HasForeignKey(uh => uh.User);
+                entity.HasOne<UserOperation>()
+                    .WithMany()
+                    .HasForeignKey(uh => uh.Operation);
+            });
+
+            modelBuilder.Entity<UserOperation>(entity =>
+            {
+                entity.ToTable("UserOperations");
+                entity.HasKey(uo => uo.Id);
+
+                entity.Property(uo => uo.Name)
+                    .IsRequired()
+                    .HasMaxLength(60);
             });
 
             modelBuilder.Entity<Product>(entity =>

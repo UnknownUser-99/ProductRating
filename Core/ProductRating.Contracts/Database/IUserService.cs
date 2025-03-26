@@ -2,6 +2,6 @@
 {
     public interface IUserService
     {
-        Task<int> AddUserAsync(int phone, string name, string password);
+        Task<int> AddUserAsync(string phone, string name, string password);
     }
 }

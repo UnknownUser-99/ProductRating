@@ -13,7 +13,7 @@ namespace ProductRating.Services.Database
             _context = context;
         }
 
-        public async Task<int> AddUserAsync(int phone, string name, string password)
+        public async Task<int> AddUserAsync(string phone, string name, string password)
         {
             User user = new User
             {
@@ -25,7 +25,7 @@ namespace ProductRating.Services.Database
             UserHistory userHistory = new UserHistory
             {
                 User = user.Id,
-                Operation = UserOperationType.Register.ToString()
+                Operation = (int)UserOperationType.Register
             };
 
             _context.Users.Add(user);
@@ -34,6 +34,31 @@ namespace ProductRating.Services.Database
             await _context.SaveChangesAsync();
 
             return user.Id;
+        }
+
+        public async Task<bool> UpdateUserRoleAsync(int id, UserRoleType role)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.Role = (int)role;
+
+            UserHistory userHistory = new UserHistory
+            {
+                User = user.Id,
+                Operation = (int)UserOperationType.ChangeRole
+            };
+
+            _context.Users.Update(user);
+            _context.UserHistory.Add(userHistory);
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

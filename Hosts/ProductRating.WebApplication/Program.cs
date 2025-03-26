@@ -8,6 +8,7 @@ namespace ProductRating.WebApplication
         {
             var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
+            builder.Services.Configure<AuthorizationControllerOptions>(builder.Configuration.GetSection("Configurations:AuthorizationController"));
             builder.Services.Configure<MainControllerOptions>(builder.Configuration.GetSection("Configurations:MainController"));
             builder.Services.Configure<RecognitionControllerOptions>(builder.Configuration.GetSection("Configurations:RecognitionController"));
 
@@ -31,7 +32,12 @@ namespace ProductRating.WebApplication
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Main}/{action=Main}/{id?}");
+                pattern: "{controller=Authorization}/{action=Authorization}/{id?}");
+
+            app.MapControllerRoute(
+                name: "registration",
+                pattern: "registration",
+                defaults: new { controller = "Registration", action = "Registration" });
 
             app.Run();
         }
