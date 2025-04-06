@@ -1,5 +1,5 @@
-﻿using ProductRating.Data.Entities.ProductRecognition;
-using ProductRating.Data.Entities.WebAPI.Results;
+﻿using ProductRating.Data.ProductRecognition;
+using ProductRating.Data.WebAPI.Results;
 
 namespace ProductRating.Contracts.DTO
 {

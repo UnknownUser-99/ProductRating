@@ -1,16 +1,20 @@
-﻿using ProductRating.Data.Configurations;
+﻿using ProductRating.Contracts.Authorization;
+using ProductRating.Contracts.HttpRequest;
+using ProductRating.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace ProductRating.WebApplication.Controllers
 {
+    [Route("authorization")]
     public class AuthorizationController : Controller
     {
-        private readonly AuthorizationControllerOptions _options;
+        private readonly IAuthRequestService _authRequestService;
+        private readonly ICookieService _cookieService;
 
-        public AuthorizationController(IOptions<AuthorizationControllerOptions> options)
+        public AuthorizationController(IAuthRequestService userRequestService, ICookieService cookieService)
         {
-            _options = options.Value;
+            _authRequestService = userRequestService;
+            _cookieService = cookieService;
         }
 
         [HttpGet]
@@ -20,9 +24,20 @@ namespace ProductRating.WebApplication.Controllers
         }
 
         [HttpPost]
-        public IActionResult Authorization(int phone, string password)
+        public async Task<IActionResult> Authorization(AuthorizationModel model)
         {
-            return View();
+            var result = await _authRequestService.AuthorizeAsync(model.Phone, model.Password);
+
+            if (result == null)
+            {
+                ModelState.AddModelError("", "Ошибка при авторизации пользователя");
+
+                return View(model);
+            }
+
+            _cookieService.CreateTokenCookie(HttpContext, result.Token);
+
+            return RedirectToAction("Main", "Main");
         }
     }
 }

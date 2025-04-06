@@ -13,16 +13,20 @@ namespace ProductRating.WebAPI.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Path.StartsWithSegments("/api/product", StringComparison.OrdinalIgnoreCase))
+            if (context.Request.Path.StartsWithSegments("/swagger", StringComparison.OrdinalIgnoreCase) || context.Request.Path.StartsWithSegments("/api-docs", StringComparison.OrdinalIgnoreCase) ||context.Request.Path.StartsWithSegments("/api/auth", StringComparison.OrdinalIgnoreCase))
             {
-                if (!Auth(context))
-                {
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await _next(context);
 
-                    await context.Response.WriteAsync("Token недействительный.");
+                return;
+            }
 
-                    return;
-                }
+            if (!Auth(context))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                await context.Response.WriteAsync("Token недействительный.");
+
+                return;
             }
 
             await _next(context);
@@ -34,12 +38,12 @@ namespace ProductRating.WebAPI.Middlewares
 
             var authHead = context.Request.Headers["Authorization"].FirstOrDefault();
 
-            if (string.IsNullOrWhiteSpace(authHead))
+            if (string.IsNullOrWhiteSpace(authHead) || !authHead.StartsWith("Bearer ", StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }
 
-            var token = authHead.Trim();
+            var token = authHead["Bearer ".Length..].Trim();
 
             var principal = jwtService.VerifyToken(token);
 

@@ -4,5 +4,6 @@
     {
         public string SecretKey { get; init; }
         public string Issuer { get; init; }
+        public int TokenTime { get; init; }
     }
 }

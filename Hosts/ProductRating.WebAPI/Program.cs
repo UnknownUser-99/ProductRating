@@ -3,13 +3,16 @@ using ProductRating.Contracts.Database;
 using ProductRating.Contracts.DTO;
 using ProductRating.Contracts.ProductRecognition;
 using ProductRating.Data.Configurations;
-using ProductRating.Data.Entities.Database;
+using ProductRating.Data.Database;
 using ProductRating.Services.Authorization;
 using ProductRating.Services.Database;
 using ProductRating.Services.DTO;
 using ProductRating.Services.ProductRecognition;
+using ProductRating.WebAPI.Filters;
+using ProductRating.WebAPI.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace ProductRating.WebAPI
 {
@@ -23,23 +26,66 @@ namespace ProductRating.WebAPI
             builder.Services.Configure<HashServiceOptions>(builder.Configuration.GetSection("Configurations:HashService"));
             builder.Services.Configure<JWTServiceOptions>(builder.Configuration.GetSection("Configurations:JWTService"));
             builder.Services.Configure<AuthControllerOptions>(builder.Configuration.GetSection("Configurations:AuthController"));
+            builder.Services.Configure<RegistrationFilterOptions>(builder.Configuration.GetSection("Configurations:RegistrationFilter"));
+            builder.Services.Configure<AuthorizationFilterOptions>(builder.Configuration.GetSection("Configurations:AuthorizationFilter"));
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             builder.Services.AddDbContext<PRDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IProductRecognitionService, ProductRecognitionService>();
             builder.Services.AddScoped<IJWTService, JWTService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IRecognitionHistoryService, RecognitionHistoryService>();
+
+            builder.Services.AddScoped<RegistrationFilter>();
+            builder.Services.AddScoped<AuthorizationFilter>();
+            builder.Services.AddScoped<VerificationFilter>();
 
             builder.Services.AddSingleton<IHashService, HashService>();
             builder.Services.AddSingleton<IProductRecognitionDTOService, ProductRecognitionDTOService>();
+            builder.Services.AddSingleton<IAuthDTOService, AuthDTOService>();
+            builder.Services.AddSingleton<IErrorDTOService, ErrorDTOService>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Description = "¬ведите Token."
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
 
             var app = builder.Build();
+
+            app.UseMiddleware<AuthMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {

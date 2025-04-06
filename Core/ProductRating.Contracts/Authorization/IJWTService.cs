@@ -4,7 +4,7 @@ namespace ProductRating.Contracts.Authorization
 {
     public interface IJWTService
     {
-        string GenerateToken(int id, TimeSpan time);
+        string GenerateToken(int id, int role);
         ClaimsPrincipal VerifyToken(string token);
     }
 }

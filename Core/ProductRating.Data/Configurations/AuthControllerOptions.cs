@@ -8,6 +8,5 @@
         public int PasswordMaxLength { get; init; }
         public int EmailMinLength { get; init; }
         public int EmailMaxLength { get; init; }
-        public int TokenTime { get; init; }
     }
 }

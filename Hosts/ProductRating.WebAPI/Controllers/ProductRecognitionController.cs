@@ -1,34 +1,36 @@
-﻿using ProductRating.Contracts.Database;
+﻿using System.Security.Claims;
+using ProductRating.Contracts.Database;
 using ProductRating.Contracts.DTO;
 using ProductRating.Contracts.ProductRecognition;
-using ProductRating.Data.Entities.ProductRecognition;
-using ProductRating.Data.Entities.WebAPI.Requests;
-using ProductRating.Data.Entities.WebAPI.Results;
+using ProductRating.Data.ProductRecognition;
+using ProductRating.Data.WebAPI.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProductRating.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductRecognitionController : Controller
     {
         private readonly IProductRecognitionService _productRecognitionService;
         private readonly IProductService _productService;
+        private readonly IRecognitionHistoryService _recognitionHistoryService;
         private readonly IProductRecognitionDTOService _productRecognitionDTOService;
 
-        public ProductRecognitionController(IProductRecognitionService productRecognitionService,IProductService productService, IProductRecognitionDTOService productRecognitionDTOService)
+        public ProductRecognitionController(IProductRecognitionService productRecognitionService,IProductService productService,IRecognitionHistoryService recognitionHistoryService,IProductRecognitionDTOService productRecognitionDTOService)
         {
             _productRecognitionService = productRecognitionService;
             _productService = productService;
+            _recognitionHistoryService = recognitionHistoryService;
             _productRecognitionDTOService = productRecognitionDTOService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Recognize([FromBody] ProductRecognitionRequest request)
         {
-            byte[] imageBytes = Convert.FromBase64String(request.ImageBase64);
-
-            var recognitionResult = _productRecognitionService.Recognize(imageBytes);
+            var recognitionResult = _productRecognitionService.Recognize(request.ImageBase64);
 
             if (recognitionResult.Confidence == RecognitionConfidenceType.NotRecognized)
             {
@@ -41,6 +43,8 @@ namespace ProductRating.WebAPI.Controllers
             {
                 return NotFound();
             }
+
+            //var historyResult = await _recognitionHistoryService.AddRecognitionHistoryAsync(recognitionResult.Product, int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value), recognitionResult.Confidence);
 
             return Ok(_productRecognitionDTOService.CreateProductRecognitionResult(productResult, recognitionResult.Confidence));
         }

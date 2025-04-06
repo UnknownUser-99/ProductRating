@@ -1,13 +1,11 @@
-﻿using ProductRating.Contracts.Database;
-using ProductRating.Data.Configurations;
-using ProductRating.Data.Entities.WebAPI.Requests;
-using ProductRating.Data.Entities.WebAPI.Results;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProductRating.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AdminController : Controller
     {
         /*

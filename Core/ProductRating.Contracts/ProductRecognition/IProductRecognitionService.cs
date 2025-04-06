@@ -1,9 +1,9 @@
-﻿using ProductRating.Data.Entities.ProductRecognition;
+﻿using ProductRating.Data.ProductRecognition;
 
 namespace ProductRating.Contracts.ProductRecognition
 {
     public interface IProductRecognitionService
     {
-        RecognitionResult Recognize(byte[] imageBytes);
+        RecognitionResult Recognize(string imageBase64);
     }
 }
