@@ -1,5 +1,5 @@
-﻿using ProductRating.Data.Entities.Database;
-using ProductRating.Data.Entities.WebAPI.Results;
+﻿using ProductRating.Data.Database;
+using ProductRating.Data.WebAPI.Results;
 
 namespace ProductRating.Contracts.Database
 {

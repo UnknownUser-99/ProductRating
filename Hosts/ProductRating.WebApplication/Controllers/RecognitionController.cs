@@ -1,8 +1,5 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using ProductRating.Contracts.HttpRequest;
 using ProductRating.Data.Configurations;
-using ProductRating.Data.Entities.WebAPI.Requests;
-using ProductRating.Data.Entities.WebAPI.Results;
 using ProductRating.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,14 +9,15 @@ namespace ProductRating.WebApplication.Controllers
     public class RecognitionController : Controller
     {
         private readonly RecognitionControllerOptions _options;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IProductRecognitionRequestService _productRecognitionRequestService;
 
-        public RecognitionController(IOptions<RecognitionControllerOptions> options, IHttpClientFactory httpClientFactory)
+        public RecognitionController(IOptions<RecognitionControllerOptions> options, IProductRecognitionRequestService productRecognitionRequestService)
         {
             _options = options.Value;
-            _httpClientFactory = httpClientFactory;
+            _productRecognitionRequestService = productRecognitionRequestService;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return PartialView();
@@ -49,18 +47,9 @@ namespace ProductRating.WebApplication.Controllers
                 byte[] imageBytes = memoryStream.ToArray();
                 string imageBase64 = Convert.ToBase64String(imageBytes);
 
-                ProductRecognitionRequest requestBody = new ProductRecognitionRequest
-                {
-                    ImageBase64 = imageBase64
-                };
+                var result = await _productRecognitionRequestService.RecognizeAsync(imageBase64);
 
-                StringContent jsonContent = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
-
-                HttpClient client = _httpClientFactory.CreateClient();
-
-                HttpResponseMessage response = await client.PostAsync(_options.Url, jsonContent);
-
-                if (!response.IsSuccessStatusCode)
+                if (result == null)
                 {
                     return PartialView(_options.View, new RecognitionModel
                     {
@@ -72,16 +61,7 @@ namespace ProductRating.WebApplication.Controllers
                         MonthlyRating = "",
                         Confidence = "Изображение не распознано"
                     });
-                }
-
-                string resultString = await response.Content.ReadAsStringAsync();
-
-                JsonSerializerOptions options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                ProductRecognitionResult result = JsonSerializer.Deserialize<ProductRecognitionResult>(resultString, options);
+                }               
 
                 return PartialView(_options.View, new RecognitionModel
                 {

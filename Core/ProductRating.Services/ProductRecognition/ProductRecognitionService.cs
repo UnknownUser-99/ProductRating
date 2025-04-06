@@ -1,6 +1,6 @@
 ﻿using ProductRating.Contracts.ProductRecognition;
+using ProductRating.Data.ProductRecognition;
 using ProductRating.Data.Configurations;
-using ProductRating.Data.Entities.ProductRecognition;
 using Microsoft.Extensions.Options;
 
 namespace ProductRating.Services.ProductRecognition
@@ -14,8 +14,10 @@ namespace ProductRating.Services.ProductRecognition
             _options = options.Value;
         }
 
-        public RecognitionResult Recognize(byte[] imageBytes)
+        public RecognitionResult Recognize(string imageBase64)
         {
+            byte[] imageBytes = Convert.FromBase64String(imageBase64);
+
             MLProductRecognition.ModelInput inputData = new MLProductRecognition.ModelInput()
             {
                 ImageSource = imageBytes,

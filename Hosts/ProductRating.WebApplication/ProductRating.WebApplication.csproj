@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ProductRating.Contracts\ProductRating.Contracts.csproj" />
     <ProjectReference Include="..\..\Core\ProductRating.Data\ProductRating.Data.csproj" />
+    <ProjectReference Include="..\..\Core\ProductRating.Services\ProductRating.Services.csproj" />
   </ItemGroup>
 
 </Project>

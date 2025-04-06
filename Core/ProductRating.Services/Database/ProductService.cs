@@ -1,7 +1,7 @@
 ﻿using ProductRating.Contracts.Database;
-using ProductRating.Data.Entities.Database;
-using ProductRating.Data.Entities.WebAPI.Results;
 using Microsoft.EntityFrameworkCore;
+using ProductRating.Data.Database;
+using ProductRating.Data.WebAPI.Results;
 
 namespace ProductRating.Services.Database
 {

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using ProductRating.Contracts.Authorization;
 using ProductRating.Data.Configurations;
+using ProductRating.Data.Database;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,23 +18,22 @@ namespace ProductRating.Services.Authorization
             _options = options.Value;
         }
 
-        public string GenerateToken(int id, TimeSpan time)
+        public string GenerateToken(int id, int role)
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, id.ToString()),
+                new Claim(ClaimTypes.Role, Enum.GetName(typeof(UserRoleType), role))
             };
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
-
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             DateTime currentDateTime = DateTime.UtcNow;
-
-            DateTime expirationDateTime = currentDateTime.Add(time);
+            TimeSpan tokenTime = TimeSpan.FromDays(_options.TokenTime);
+            DateTime expirationDateTime = currentDateTime.Add(tokenTime);
 
             JwtSecurityToken tokenDescriptor = new JwtSecurityToken(_options.Issuer, null, claims, expires: expirationDateTime, signingCredentials: credentials);
-
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
             string token = tokenHandler.WriteToken(tokenDescriptor);
