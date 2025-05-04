@@ -22,6 +22,8 @@ namespace ProductRating.WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.UseUrls("https://localhost:7066");
+
             builder.Services.Configure<ProductRecognitionServiceOptions>(builder.Configuration.GetSection("Configurations:ProductRecognitionService"));
             builder.Services.Configure<HashServiceOptions>(builder.Configuration.GetSection("Configurations:HashService"));
             builder.Services.Configure<JWTServiceOptions>(builder.Configuration.GetSection("Configurations:JWTService"));
