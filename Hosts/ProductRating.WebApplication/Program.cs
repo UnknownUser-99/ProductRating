@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ProductRating.Contracts.Authorization;
 using ProductRating.Contracts.HttpRequest;
 using ProductRating.Contracts.ModelFactory;
@@ -14,6 +16,7 @@ namespace ProductRating.WebApplication
         {
             var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
+            builder.Services.Configure<UrlAPIOptions>(builder.Configuration.GetSection("Configurations:UrlAPI"));
             builder.Services.Configure<CookieServiceOptions>(builder.Configuration.GetSection("Configurations:CookieService"));
             builder.Services.Configure<RecognitionControllerOptions>(builder.Configuration.GetSection("Configurations:RecognitionController"));
 
@@ -29,18 +32,22 @@ namespace ProductRating.WebApplication
 
             builder.Services.AddHttpContextAccessor();
 
+            var urlApi = builder.Configuration
+                .GetSection("Configurations:UrlAPI")
+                .Get<UrlAPIOptions>();
+
             builder.Services.AddHttpClient();
 
             builder.Services.AddHttpClient<IAuthRequestService, AuthRequestService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7066/api/Auth/");
+                client.BaseAddress = new Uri(urlApi.AuthRequest);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
 
             builder.Services.AddHttpClient<IProductRecognitionRequestService, ProductRecognitionRequestService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7066/api/ProductRecognition/");
+                client.BaseAddress = new Uri(urlApi.ProductRecognitionRequest);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
@@ -48,7 +55,7 @@ namespace ProductRating.WebApplication
 
             builder.Services.AddHttpClient<IProductRequestService, ProductRequestService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7066/api/Product/");
+                client.BaseAddress = new Uri(urlApi.ProductRequest);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
@@ -56,7 +63,7 @@ namespace ProductRating.WebApplication
 
             builder.Services.AddHttpClient<IReviewRequestService, ReviewRequestService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7066/api/Review/");
+                client.BaseAddress = new Uri(urlApi.ReviewRequest);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
