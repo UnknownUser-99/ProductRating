@@ -1,5 +1,5 @@
 ﻿using ProductRating.Contracts.HttpRequest;
-using ProductRating.WebApplication.Models;
+using ProductRating.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProductRating.WebApplication.Controllers
@@ -17,13 +17,13 @@ namespace ProductRating.WebApplication.Controllers
         [HttpGet]
         public IActionResult Registration()
         {
-            return View();
+            return View("~/Views/Auth/Registration.cshtml");
         }
 
         [HttpPost]
         public async Task<IActionResult> Registration(RegistrationModel model)
         {
-            var result = await _userRequestService.RegisterUserAsync(model.Phone, model.Name, model.Password);
+            var result = await _userRequestService.RegisterAsync(model.Phone, model.Name, model.Password);
 
             if (result == false)
             {

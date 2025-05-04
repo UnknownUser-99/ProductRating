@@ -1,6 +1,6 @@
 ﻿using ProductRating.Contracts.HttpRequest;
+using ProductRating.Contracts.ModelFactory;
 using ProductRating.Data.Configurations;
-using ProductRating.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -10,34 +10,31 @@ namespace ProductRating.WebApplication.Controllers
     {
         private readonly RecognitionControllerOptions _options;
         private readonly IProductRecognitionRequestService _productRecognitionRequestService;
+        private readonly IReviewRequestService _reviewRequestService;
+        private readonly IRecognitionModelService _recognitionModelService;
+        private readonly IReviewModelService _reviewModelService;
 
-        public RecognitionController(IOptions<RecognitionControllerOptions> options, IProductRecognitionRequestService productRecognitionRequestService)
+        public RecognitionController(IOptions<RecognitionControllerOptions> options, IProductRecognitionRequestService productRecognitionRequestService, IReviewRequestService reviewRequestService, IRecognitionModelService recognitionModelService, IReviewModelService reviewModelService)
         {
             _options = options.Value;
             _productRecognitionRequestService = productRecognitionRequestService;
+            _reviewRequestService = reviewRequestService;
+            _recognitionModelService = recognitionModelService;
+            _reviewModelService = reviewModelService;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Recognition()
         {
             return PartialView();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Recognize(IFormFile imageFile)
+        public async Task<IActionResult> Recognition(IFormFile imageFile)
         {
             if (imageFile == null || imageFile.Length == 0)
             {
-                return PartialView(_options.View, new RecognitionModel
-                {
-                    Product = "",
-                    Brand = "",
-                    Type = "",
-                    OverallRating = "",
-                    YearlyRating = "",
-                    MonthlyRating = "",
-                    Confidence = ""
-                });
+                return PartialView(_options.MainView, _recognitionModelService.CreateRecognitionModel());
             }
 
             using (MemoryStream memoryStream = new MemoryStream())
@@ -47,33 +44,16 @@ namespace ProductRating.WebApplication.Controllers
                 byte[] imageBytes = memoryStream.ToArray();
                 string imageBase64 = Convert.ToBase64String(imageBytes);
 
-                var result = await _productRecognitionRequestService.RecognizeAsync(imageBase64);
+                var recognitionResult = await _productRecognitionRequestService.RecognizeAsync(imageBase64);
 
-                if (result == null)
+                if (recognitionResult == null)
                 {
-                    return PartialView(_options.View, new RecognitionModel
-                    {
-                        Product = "",
-                        Brand = "",
-                        Type = "",
-                        OverallRating = "",
-                        YearlyRating = "",
-                        MonthlyRating = "",
-                        Confidence = "Изображение не распознано"
-                    });
-                }               
+                    return PartialView(_options.MainView, _recognitionModelService.CreateRecognitionModel());
+                }
 
-                return PartialView(_options.View, new RecognitionModel
-                {
-                    Product = result.Product.Product,
-                    Brand = result.Product.Brand,
-                    Type = result.Product.Type,
-                    Image = result.Product.Image,
-                    OverallRating = result.Product.OverallRating.ToString(),
-                    YearlyRating = result.Product.YearlyRating.ToString(),
-                    MonthlyRating = result.Product.MonthlyRating.ToString(),
-                    Confidence = result.Confidence
-                });
+                var reviewsResult = await _reviewRequestService.GetReviewForRecognition(recognitionResult.Product.Id);
+
+                return PartialView(_options.MainView, _recognitionModelService.CreateRecognitionModel(recognitionResult, _reviewModelService.CreateReviewModels(reviewsResult)));
             }
         }
     }

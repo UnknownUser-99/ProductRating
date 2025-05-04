@@ -21,14 +21,12 @@ namespace ProductRating.Services.HttpRequest
                 ImageBase64 = imageBase64
             };
 
-            var response = await _httpClient.PostAsJsonAsync("ProductRecognition", request);
+            var response = await _httpClient.PostAsJsonAsync("", request);
 
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
-
-            Console.WriteLine($"Response Body: {response}");
 
             var result = await response.Content.ReadFromJsonConfiguredAsync<ProductRecognitionResult>();
 

@@ -1,6 +1,6 @@
-namespace ProductRating.WebApplication.Models
+namespace ProductRating.Data.Models
 {
-    public class ErrorViewModel
+    public class ErrorModel
     {
         public string? RequestId { get; set; }
 

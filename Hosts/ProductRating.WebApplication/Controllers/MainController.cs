@@ -1,25 +1,32 @@
 using ProductRating.Contracts.HttpRequest;
-using ProductRating.Data.Configurations;
+using ProductRating.Contracts.ModelFactory;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace ProductRating.WebApplication.Controllers
 {
     public class MainController : Controller
     {
-        private readonly MainControllerOptions _options;
         private readonly IAuthRequestService _authRequestService;
+        private readonly IProductRequestService _productRequestService;
+        private readonly IProductModelService _productModelService;
 
-        public MainController(IOptions<MainControllerOptions> options, IAuthRequestService authRequestService)
+        public MainController(IAuthRequestService authRequestService, IProductRequestService productRequestService, IProductModelService productModelFactory)
         {
-            _options = options.Value;
             _authRequestService = authRequestService;
+            _productRequestService = productRequestService;
+            _productModelService = productModelFactory;
         }
 
         [HttpGet]
         public async Task<ActionResult> Main()
         {
             string token = Request.Cookies["AuthToken"];
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return RedirectToAction("Authorization", "Authorization");
+            }
+
             var result = await _authRequestService.VerifyAsync(token);
 
             if (string.IsNullOrWhiteSpace(result.Id) || string.IsNullOrWhiteSpace(result.Role))
@@ -33,25 +40,27 @@ namespace ProductRating.WebApplication.Controllers
         [HttpGet]
         public ActionResult Profile()
         {
-            return PartialView("Profile");
+            return PartialView();
         }
 
         [HttpGet]
         public ActionResult Recognition()
         {
-            return PartialView(_options.RecognitionView);
+            return PartialView();
         }
 
         [HttpGet]
         public ActionResult Reviews()
         {
-            return PartialView("Reviews");
+            return PartialView();
         }
 
         [HttpGet]
-        public ActionResult Products()
+        public async Task<ActionResult> Products()
         {
-            return PartialView(_options.ProductsView);
+            var result = await _productRequestService.GetProductCardsAsync();       
+
+            return PartialView(_productModelService.CreateProductModels(result));
         }
     }
 }

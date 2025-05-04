@@ -77,7 +77,7 @@ namespace ProductRating.Data.Database
                     .IsRequired();
                 entity.Property(uh => uh.Date)
                     .IsRequired()
-                    .HasDefaultValueSql("GETDATE()");
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne<User>()
                     .WithMany()
@@ -188,6 +188,9 @@ namespace ProductRating.Data.Database
                 entity.Property(r => r.Description)
                     .IsRequired()
                     .HasMaxLength(1000);
+                entity.Property(r => r.Date)
+                    .IsRequired()
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne<Product>()
                     .WithMany()
@@ -209,7 +212,7 @@ namespace ProductRating.Data.Database
                     .HasMaxLength(30);
                 entity.Property(rh => rh.Date)
                     .IsRequired()
-                    .HasDefaultValueSql("GETDATE()");
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne<Review>()
                     .WithMany()
@@ -251,7 +254,7 @@ namespace ProductRating.Data.Database
                     .HasMaxLength(30);
                 entity.Property(ch => ch.Date)
                     .IsRequired()
-                    .HasDefaultValueSql("GETDATE()");
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne<Comment>()
                     .WithMany()
@@ -272,7 +275,7 @@ namespace ProductRating.Data.Database
                     .HasMaxLength(30);
                 entity.Property(rh => rh.Date)
                     .IsRequired()
-                    .HasDefaultValueSql("GETDATE()");
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne<Product>()
                     .WithMany()

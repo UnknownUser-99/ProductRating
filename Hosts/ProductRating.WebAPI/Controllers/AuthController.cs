@@ -43,7 +43,7 @@ namespace ProductRating.WebAPI.Controllers
         [ServiceFilter(typeof(AuthorizationFilter))]
         public async Task<IActionResult> Authorization([FromBody] AuthorizationRequest request)
         {
-            var user = await _userService.GetUserByPhone(request.Phone);
+            var user = await _userService.GetUserByPhoneAsync(request.Phone);
 
             if (user == null || !_hashService.VerifyPassword(request.Password, user.Password))
             {
