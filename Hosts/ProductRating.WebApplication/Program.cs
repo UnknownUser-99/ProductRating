@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using ProductRating.Contracts.Authorization;
 using ProductRating.Contracts.HttpRequest;
 using ProductRating.Contracts.ModelFactory;
@@ -36,6 +34,9 @@ namespace ProductRating.WebApplication
                 .GetSection("Configurations:UrlAPI")
                 .Get<UrlAPIOptions>();
 
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) => true;
+
             builder.Services.AddHttpClient();
 
             builder.Services.AddHttpClient<IAuthRequestService, AuthRequestService>(client =>
@@ -43,7 +44,8 @@ namespace ProductRating.WebApplication
                 client.BaseAddress = new Uri(urlApi.AuthRequest);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
-            });
+            })
+            .ConfigurePrimaryHttpMessageHandler(() => handler);
 
             builder.Services.AddHttpClient<IProductRecognitionRequestService, ProductRecognitionRequestService>(client =>
             {
@@ -51,7 +53,8 @@ namespace ProductRating.WebApplication
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
-            .AddHttpMessageHandler<AuthTokenHandler>();
+            .AddHttpMessageHandler<AuthTokenHandler>()
+            .ConfigurePrimaryHttpMessageHandler(() => handler);
 
             builder.Services.AddHttpClient<IProductRequestService, ProductRequestService>(client =>
             {
@@ -59,7 +62,8 @@ namespace ProductRating.WebApplication
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
-            .AddHttpMessageHandler<AuthTokenHandler>();
+            .AddHttpMessageHandler<AuthTokenHandler>()
+            .ConfigurePrimaryHttpMessageHandler(() => handler);
 
             builder.Services.AddHttpClient<IReviewRequestService, ReviewRequestService>(client =>
             {
@@ -67,7 +71,8 @@ namespace ProductRating.WebApplication
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.Timeout = TimeSpan.FromSeconds(30);
             })
-            .AddHttpMessageHandler<AuthTokenHandler>();
+            .AddHttpMessageHandler<AuthTokenHandler>()
+            .ConfigurePrimaryHttpMessageHandler(() => handler);
 
             var app = builder.Build();
 
