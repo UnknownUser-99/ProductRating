@@ -1,0 +1,87 @@
+﻿@model RecognitionModel
+
+<div class="recognition-page fade-in">
+    <div class= "main-section">
+        <div id="imageContainer">
+            <div id="imagePreview" class="image-preview">
+                <p class="placeholder-text">Загрузите изображение</p>
+            </div>
+
+            <div class="buttons">
+                <div class="upload">
+                    <label for="imageUpload" class="upload-button">Загрузить</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+
+                <form method="post" enctype="multipart/form-data" asp-action="Recognition" asp-controller="Recognition">
+                    <button type="submit" class="recognize-button">Распознать</button>
+                </form>
+            </div>
+        </div>
+
+        @if (Model != null)
+        {
+            <div id="resultContainer">
+                <div class="result-content">
+                    <div class="image-block">
+                        <div class="image-container">
+                            <img src="@Model.Image" alt="Изображение товара" class="product-image" />
+                        </div>
+
+                        <div class="confidence-text" style="background-color: @Model.ConfidenceColor">
+                            @Model.Confidence
+                        </div>
+
+                        <button class="review-button">Написать отзыв</button>
+                    </div>
+
+                    <div class="info-container">
+                        <h3>Информация о товаре</h3>
+                        <p><strong>Товар:</strong> @Model.Product</p>
+                        <p><strong>Бренд:</strong> @Model.Brand</p>
+                        <p><strong>Тип:</strong> @Model.Type</p>
+
+                        <h3>Рейтинг товара</h3>
+                        <p><strong>Общий рейтинг:</strong> @Model.OverallRating</p>
+                        <p><strong>Годичный рейтинг:</strong> @Model.YearlyRating</p>
+                        <p><strong>Месячный рейтинг:</strong> @Model.MonthlyRating</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modalContainer">
+                @await Html.PartialAsync("AddReview", Model)
+            </div>
+        }
+    </div>
+
+    @if (Model != null)
+    {
+        <div class="reviews-section">
+            <h2 class="reviews-header">Последние отзывы</h2>
+            <div class="reviews-container">
+                @if (Model.Reviews == null || Model.Reviews.Length == 0)
+                {
+                    <p class="no-reviews-message">Отзывы не найдены.</p>
+                }
+                else
+                {
+                    @foreach (ReviewModel review in Model.Reviews)
+                    {
+                        <div class="review-card-wrapper">
+                            @await Html.PartialAsync("ReviewCard", review)
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/recognition.css" asp-append-version="true">
+<link rel="stylesheet" href="~/css/review-card.css" asp-append-version="true">
+<link rel="stylesheet" href="~/css/add-review.css" asp-append-version="true">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/recognition.js" asp-append-version="true"></script>
+<script src="~/js/add-review.js" asp-append-version="true"></script>

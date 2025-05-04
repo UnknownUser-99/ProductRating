@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ProductModel>
+
+<h2>Продукты</h2>
+
+<div class="products-container">
+    @foreach(ProductModel product in Model)
+    {
+        @Html.Partial("ProductCard", product)
+    }
+</div>
+
+<link rel="stylesheet" href="~/css/products.css" asp-append-version="true">
+<link rel="stylesheet" href="~/css/product-card.css" asp-append-version="true">

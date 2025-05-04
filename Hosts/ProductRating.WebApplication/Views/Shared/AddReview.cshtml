@@ -1,0 +1,34 @@
+﻿@model RecognitionModel
+
+<div class="modal-overlay" id="addReview">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>Отзыв о товаре <span class="product-name">@Model.Product</span></h3>
+
+        <form id="reviewForm" method="post" asp-action="Review" asp-controller="Review">
+            <input type="hidden" name="Product" value="@Model.Id" />
+
+            <div class="form-group">
+                <label>Оценка:</label>
+                <div class="star-rating">
+                    @for (int i = 10; i >= 1; i--)
+                    {
+                        <input type="radio" id="star-@i" name="Rating" value="@i" />
+                        <label for="star-@i">★</label>
+                    }
+                </div>
+                <span class="error-message rating-error">Выберите оценку</span>
+            </div>
+
+            <div class="form-group">
+                <label for="reviewText">Отзыв:</label>
+                <textarea id="reviewText" name="Description" rows="5"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="cancel-button">Отмена</button>
+                <button type="submit" class="submit-button">Отправить</button>
+            </div>
+        </form>
+    </div>
+</div>
