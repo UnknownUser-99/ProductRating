@@ -8,5 +8,7 @@
 }
 
 $(document).ready(function () {
-    loadPage('Profile');
+    if (location.pathname === "/" || location.pathname.toLowerCase() === "/main") {
+        loadPage('Profile');
+    }
 });

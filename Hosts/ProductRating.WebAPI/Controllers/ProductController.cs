@@ -1,4 +1,5 @@
 ﻿using ProductRating.Contracts.Database;
+using ProductRating.Contracts.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -10,70 +11,64 @@ namespace ProductRating.WebAPI.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        private readonly IProductDTOService _productDTOService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IProductDTOService productDTOService)
         {
             _productService = productService;
+            _productDTOService = productDTOService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            try
-            {
-                var result = await _productService.GetProducts();
+            var result = await _productService.GetProductsAsync();
 
-                if (result == null || result.Length == 0)
-                {
-                    return NotFound("Товары не найдены");
-                }
-
-                return Ok(result);
-            }
-            catch (Exception)
+            if (result == null || result.Length == 0)
             {
-                return Problem(title: "Ошибка при работе с базой данных.", statusCode: 500);
+                return NotFound("Товары не найдены");
             }
+
+            return Ok(result);
+        }
+
+        [HttpGet("ProductCards")]
+        public async Task<IActionResult> GetProductCards()
+        {
+            var result = await _productService.GetProductCardsAsync();
+
+            if (result == null || result.Length == 0)
+            {
+                return NotFound("Товары не найдены");
+            }
+
+            return Ok(_productDTOService.CreateProductCardsResult(result));
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetProductById(int id)
         {
-            try
-            {
-                var result = await _productService.GetProductById(id);
+            var result = await _productService.GetProductByIdAsync(id);
 
-                if (result == null)
-                {
-                    return NotFound("Товар не найден");
-                }
-
-                return Ok(result);
-            }
-            catch (Exception)
+            if (result == null)
             {
-                return Problem(title: "Ошибка при работе с базой данных.", statusCode: 500);
+                return NotFound("Товар не найден");
             }
+
+            return Ok(result);
         }
 
         [HttpGet("{name}")]
         public async Task<IActionResult> GetProductByName(string name)
         {
-            try
-            {
-                var result = await _productService.GetProductsByName(name);
+            var result = await _productService.GetProductsByNameAsync(name);
 
-                if (result == null || result.Length == 0)
-                {
-                    return NotFound("Товары не найдены");
-                }
-
-                return Ok(result);
-            }
-            catch (Exception)
+            if (result == null || result.Length == 0)
             {
-                return Problem(title: "Ошибка при работе с базой данных.", statusCode: 500);
+                return NotFound("Товары не найдены");
             }
+
+            return Ok(result);
         }
     }
 }

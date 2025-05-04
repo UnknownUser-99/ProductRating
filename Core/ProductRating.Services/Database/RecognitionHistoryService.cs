@@ -15,16 +15,6 @@ namespace ProductRating.Services.Database
 
         public async Task<int> AddRecognitionHistoryAsync(int product, int user, RecognitionConfidenceType confidence)
         {
-            if (product < 1)
-            {
-                throw new ArgumentException("Product меньше 1.", nameof(product));
-            }
-
-            if (user < 1)
-            {
-                throw new ArgumentException("User меньше 1.", nameof(user));
-            }
-
             RecognitionHistory history = new RecognitionHistory()
             {
                 Product = product,

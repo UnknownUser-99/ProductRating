@@ -14,7 +14,7 @@ namespace ProductRating.Services.HttpRequest
             _httpClient = httpClient;
         }
 
-        public async Task<bool> RegisterUserAsync(string phone, string name, string password)
+        public async Task<bool> RegisterAsync(string phone, string name, string password)
         {
             RegistrationRequest request = new RegistrationRequest
             {
@@ -23,7 +23,7 @@ namespace ProductRating.Services.HttpRequest
                 Password = password
             };
 
-            var response = await _httpClient.PostAsJsonAsync("Auth/Registration", request);
+            var response = await _httpClient.PostAsJsonAsync("Registration", request);
 
             return response.IsSuccessStatusCode;
         }
@@ -36,7 +36,7 @@ namespace ProductRating.Services.HttpRequest
                 Password = password
             };
 
-            var response = await _httpClient.PostAsJsonAsync("Auth/Authorization", request);
+            var response = await _httpClient.PostAsJsonAsync("Authorization", request);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -55,7 +55,7 @@ namespace ProductRating.Services.HttpRequest
                 Token = token
             };
 
-            var response = await _httpClient.PostAsJsonAsync("Auth/Verification", request);
+            var response = await _httpClient.PostAsJsonAsync("Verification", request);
 
             if (!response.IsSuccessStatusCode)
             {

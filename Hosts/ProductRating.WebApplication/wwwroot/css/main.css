@@ -11,11 +11,19 @@ body {
     width: 100%;
 }
 
+.logo-image {
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto; 
+    display: block;
+}
+
 .logo {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 0px;
     color: white;
 }
 

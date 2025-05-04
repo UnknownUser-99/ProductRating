@@ -1,0 +1,82 @@
+﻿.review {
+    min-width: 0;
+    width: 290px;
+    height: 200px;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+}
+
+.review-container {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+    background: #ffffff;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.review-container:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.review-user {
+    max-width: 70%;
+}
+
+.user-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+    margin-bottom: 4px;
+}
+
+.review-date {
+    font-size: 14px;
+    color: #666;
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+}
+
+.review-rating {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: #002238;
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.review-text {
+    min-width: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #444;
+    font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+    word-break: break-word;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    padding-top: 8px;
+    border-top: 1px solid #f0f0f0;
+    text-align: justify;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}

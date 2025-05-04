@@ -1,6 +1,6 @@
 ﻿using ProductRating.Contracts.ProductRecognition;
-using ProductRating.Data.ProductRecognition;
 using ProductRating.Data.Configurations;
+using ProductRating.Data.ProductRecognition;
 using Microsoft.Extensions.Options;
 
 namespace ProductRating.Services.ProductRecognition

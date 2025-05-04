@@ -1,6 +1,6 @@
 ﻿using ProductRating.Contracts.Authorization;
 using ProductRating.Contracts.HttpRequest;
-using ProductRating.WebApplication.Models;
+using ProductRating.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProductRating.WebApplication.Controllers
@@ -20,7 +20,7 @@ namespace ProductRating.WebApplication.Controllers
         [HttpGet]
         public IActionResult Authorization()
         {
-            return View();
+            return View("~/Views/Auth/Authorization.cshtml");
         }
 
         [HttpPost]

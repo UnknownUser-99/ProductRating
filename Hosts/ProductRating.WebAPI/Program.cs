@@ -28,6 +28,7 @@ namespace ProductRating.WebAPI
             builder.Services.Configure<AuthControllerOptions>(builder.Configuration.GetSection("Configurations:AuthController"));
             builder.Services.Configure<RegistrationFilterOptions>(builder.Configuration.GetSection("Configurations:RegistrationFilter"));
             builder.Services.Configure<AuthorizationFilterOptions>(builder.Configuration.GetSection("Configurations:AuthorizationFilter"));
+            builder.Services.Configure<AddReviewFilterOptions>(builder.Configuration.GetSection("Configurations:AddReviewFilter"));
 
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -35,24 +36,34 @@ namespace ProductRating.WebAPI
             });
 
             builder.Services.AddDbContext<PRDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddScoped<IProductRecognitionService, ProductRecognitionService>();
             builder.Services.AddScoped<IJWTService, JWTService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IRecognitionHistoryService, RecognitionHistoryService>();
 
             builder.Services.AddScoped<RegistrationFilter>();
             builder.Services.AddScoped<AuthorizationFilter>();
             builder.Services.AddScoped<VerificationFilter>();
+            builder.Services.AddScoped<AddReviewFilter>();
 
             builder.Services.AddSingleton<IHashService, HashService>();
             builder.Services.AddSingleton<IProductRecognitionDTOService, ProductRecognitionDTOService>();
+            builder.Services.AddSingleton<IProductDTOService, ProductDTOService>();
+            builder.Services.AddSingleton<IReviewDTOService, ReviewDTOService>();
             builder.Services.AddSingleton<IAuthDTOService, AuthDTOService>();
             builder.Services.AddSingleton<IErrorDTOService, ErrorDTOService>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                });
+
+
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen(options =>

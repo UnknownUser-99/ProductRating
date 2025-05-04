@@ -15,11 +15,6 @@ namespace ProductRating.Services.Database
 
         public async Task<int> AddUserAsync(string phone, string name, string password)
         {
-            if (string.IsNullOrWhiteSpace(phone) || string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException("Параметры пустые или null.");
-            }
-
             using (var transaction = await _context.Database.BeginTransactionAsync())
             {
                 try
@@ -58,11 +53,6 @@ namespace ProductRating.Services.Database
 
         public async Task<bool> UpdateUserRoleAsync(int id, UserRoleType role)
         {
-            if (id < 1)
-            {
-                throw new ArgumentException("Id меньше 1.", nameof(id));
-            }
-
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
@@ -86,13 +76,8 @@ namespace ProductRating.Services.Database
             return true;
         }
 
-        public async Task<User> GetUserByPhone(string phone)
+        public async Task<User> GetUserByPhoneAsync(string phone)
         {
-            if (string.IsNullOrWhiteSpace(phone))
-            {
-                throw new ArgumentException("Phone пустой или null.", nameof(phone));
-            }
-
             return await _context.Users.FirstOrDefaultAsync(user => user.Phone == phone);
         }
     }

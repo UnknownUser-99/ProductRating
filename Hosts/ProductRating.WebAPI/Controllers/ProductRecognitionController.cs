@@ -37,7 +37,7 @@ namespace ProductRating.WebAPI.Controllers
                 return NotFound();
             }
 
-            var productResult = await _productService.GetProductWithRating(recognitionResult.Product);
+            var productResult = await _productService.GetProductWithRatingAsync(recognitionResult.Product);
 
             if (productResult == null)
             {

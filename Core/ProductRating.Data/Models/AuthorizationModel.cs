@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductRating.WebApplication.Models
+namespace ProductRating.Data.Models
 {
     public class AuthorizationModel
     {
