@@ -32,6 +32,19 @@ namespace ProductRating.Services.Database
             return review.Id;
         }
 
+        public async Task<ReviewRatingResult[]> GetReviewsForUpdateRatingAsync()
+        {
+            var result = await _context.Reviews
+                .Select(r => new ReviewRatingResult
+                {
+                    Product = r.Product,
+                    Rating = r.Rating
+                })
+                .ToArrayAsync();
+
+            return result;
+        }
+
         public async Task<ReviewForRecognitionResult[]> GetReviewsForRecognitionAsync(int product, int count = 5)
         {
             var result = await (
