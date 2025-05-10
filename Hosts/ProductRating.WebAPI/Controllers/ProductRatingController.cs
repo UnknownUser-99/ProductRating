@@ -27,5 +27,38 @@ namespace ProductRating.WebAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("UpdateOverallProductRatings")]
+        public async Task<IActionResult> UpdateOverallProductRatings([FromBody] UpdateProductRatingsRequest request)
+        {
+            foreach (var rating in request.Ratings)
+            {
+                await _productRatingService.UpdateOverallProductRatingAsync(rating.Product, rating.Rating);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("UpdateYearlyProductRatings")]
+        public async Task<IActionResult> UpdateYearlyProductRatings([FromBody] UpdateProductRatingsRequest request)
+        {
+            foreach (var rating in request.Ratings)
+            {
+                await _productRatingService.UpdateYearlyProductRatingAsync(rating.Product, rating.Rating);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("UpdateMonthlyProductRatings")]
+        public async Task<IActionResult> UpdateMonthlyProductRatings([FromBody] UpdateProductRatingsRequest request)
+        {
+            foreach (var rating in request.Ratings)
+            {
+                await _productRatingService.UpdateMonthlyProductRatingAsync(rating.Product, rating.Rating);
+            }
+
+            return NoContent();
+        }
     }
 }

@@ -31,5 +31,56 @@ namespace ProductRating.Services.Database
 
             return true;
         }
+
+        public async Task<bool> UpdateOverallProductRatingAsync(int product, decimal rating)
+        {
+            var productRating = await _context.ProductRatings.FirstOrDefaultAsync(pr => pr.Product == product);
+
+            if (productRating == null)
+            {
+                return false;
+            }
+
+            productRating.OverallRating = rating;
+
+            _context.Update(productRating);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> UpdateYearlyProductRatingAsync(int product, decimal rating)
+        {
+            var productRating = await _context.ProductRatings.FirstOrDefaultAsync(pr => pr.Product == product);
+
+            if (productRating == null)
+            {
+                return false;
+            }
+
+            productRating.YearlyRating = rating;
+
+            _context.Update(productRating);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> UpdateMonthlyProductRatingAsync(int product, decimal rating)
+        {
+            var productRating = await _context.ProductRatings.FirstOrDefaultAsync(pr => pr.Product == product);
+
+            if (productRating == null)
+            {
+                return false;
+            }
+
+            productRating.MonthlyRating = rating;
+
+            _context.Update(productRating);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

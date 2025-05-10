@@ -25,5 +25,41 @@ namespace ProductRating.Services.HttpRequest
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> UpdateOverallProductRatingsAsync(NewProductRating[] ratings)
+        {
+            UpdateProductRatingsRequest request = new UpdateProductRatingsRequest()
+            {
+                Ratings = ratings
+            };
+
+            var response = await _httpClient.PutAsJsonAsync("UpdateOverallProductRatings", request);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateYearlyProductRatingsAsync(NewProductRating[] ratings)
+        {
+            UpdateProductRatingsRequest request = new UpdateProductRatingsRequest()
+            {
+                Ratings = ratings
+            };
+
+            var response = await _httpClient.PutAsJsonAsync("UpdateYearlyProductRatings", request);
+
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateMonthlyProductRatingsAsync(NewProductRating[] ratings)
+        {
+            UpdateProductRatingsRequest request = new UpdateProductRatingsRequest()
+            {
+                Ratings = ratings
+            };
+
+            var response = await _httpClient.PutAsJsonAsync("UpdateMonthlyProductRatings", request);
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }

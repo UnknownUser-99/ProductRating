@@ -60,5 +60,47 @@ namespace ProductRating.Services.HttpRequest
 
             return result;
         }
+
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateOverallRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateOverallRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
+
+            return result;
+        }
+
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateYearlyRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateYearlyRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
+
+            return result;
+        }
+
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateMonthlyRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateMonthlyRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
+
+            return result;
+        }
     }
 }

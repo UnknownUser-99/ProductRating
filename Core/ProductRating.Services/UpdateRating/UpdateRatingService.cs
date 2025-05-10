@@ -60,7 +60,7 @@ namespace ProductRating.Services.UpdateRating
 
         private async Task<int> UpdateOverallRatingAsync()
         {
-            var reviewResult = await _reviewRequestService.GetReviewsForUpdateRatingAsync();
+            var reviewResult = await _reviewRequestService.GetReviewsForUpdateOverallRatingAsync();
 
             if (reviewResult == null)
             {
@@ -78,7 +78,7 @@ namespace ProductRating.Services.UpdateRating
                 };
             }
 
-            var result = await _productRatingRequestService.UpdateInitialProductRatingsAsync(ratings);
+            var result = await _productRatingRequestService.UpdateOverallProductRatingsAsync(ratings);
 
             if (result == false)
             {
@@ -90,7 +90,7 @@ namespace ProductRating.Services.UpdateRating
 
         private async Task<int> UpdateYearlyRatingAsync()
         {
-            var reviewResult = await _reviewRequestService.GetReviewsForUpdateRatingAsync();
+            var reviewResult = await _reviewRequestService.GetReviewsForUpdateYearlyRatingAsync();
 
             if (reviewResult == null)
             {
@@ -108,7 +108,7 @@ namespace ProductRating.Services.UpdateRating
                 };
             }
 
-            var result = await _productRatingRequestService.UpdateInitialProductRatingsAsync(ratings);
+            var result = await _productRatingRequestService.UpdateYearlyProductRatingsAsync(ratings);
 
             if (result == false)
             {
@@ -120,7 +120,7 @@ namespace ProductRating.Services.UpdateRating
 
         private async Task<int> UpdateMonthlyRatingAsync()
         {
-            var reviewResult = await _reviewRequestService.GetReviewsForUpdateRatingAsync();
+            var reviewResult = await _reviewRequestService.GetReviewsForUpdateMonthlyRatingAsync();
 
             if (reviewResult == null)
             {
@@ -138,7 +138,7 @@ namespace ProductRating.Services.UpdateRating
                 };
             }
 
-            var result = await _productRatingRequestService.UpdateInitialProductRatingsAsync(ratings);
+            var result = await _productRatingRequestService.UpdateMonthlyProductRatingsAsync(ratings);
 
             if (result == false)
             {

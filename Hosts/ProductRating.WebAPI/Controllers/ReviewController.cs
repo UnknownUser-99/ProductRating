@@ -35,6 +35,45 @@ namespace ProductRating.WebAPI.Controllers
             return Ok(_reviewDTOService.CreateReviewsForUpdateRatingResult(result));
         }
 
+        [HttpGet("ReviewsForUpdateOverallRating")]
+        public async Task<IActionResult> GetReviewsForUpdateOverallRating()
+        {
+            var result = await _reviewService.GetReviewsForUpdateOverallRatingAsync();
+
+            if (result.Length == 0)
+            {
+                return NotFound("Отзывы не найдены.");
+            }
+
+            return Ok(_reviewDTOService.CreateReviewsForUpdateRatingResult(result));
+        }
+
+        [HttpGet("ReviewsForUpdateYearlyRating")]
+        public async Task<IActionResult> GetReviewsForUpdateYearlyRating()
+        {
+            var result = await _reviewService.GetReviewsForUpdateYearlyRatingAsync();
+
+            if (result.Length == 0)
+            {
+                return NotFound("Отзывы не найдены.");
+            }
+
+            return Ok(_reviewDTOService.CreateReviewsForUpdateRatingResult(result));
+        }
+
+        [HttpGet("ReviewsForUpdateMonthlyRating")]
+        public async Task<IActionResult> GetReviewsForUpdateMonthlyRating()
+        {
+            var result = await _reviewService.GetReviewsForUpdateMonthlyRatingAsync();
+
+            if (result.Length == 0)
+            {
+                return NotFound("Отзывы не найдены.");
+            }
+
+            return Ok(_reviewDTOService.CreateReviewsForUpdateRatingResult(result));
+        }
+
         [HttpGet("ReviewsForRecognition")]
         public async Task<IActionResult> GetReviewsForRecognition([FromQuery] int product)
         {
