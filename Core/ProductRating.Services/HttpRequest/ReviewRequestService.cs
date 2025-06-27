@@ -46,7 +46,7 @@ namespace ProductRating.Services.HttpRequest
 
             return result;
         }
-
+        
         public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateRatingAsync()
         {
             var response = await _httpClient.GetAsync("ReviewsForUpdateRating");

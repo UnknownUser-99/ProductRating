@@ -42,6 +42,7 @@ namespace ProductRating.WebAPI
             builder.Services.AddScoped<IJWTService, JWTService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+
             builder.Services.AddScoped<IProductRatingService, ProductRatingService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IRecognitionHistoryService, RecognitionHistoryService>();
@@ -76,7 +77,7 @@ namespace ProductRating.WebAPI
                     In = ParameterLocation.Header,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    Description = "¬‚Â‰ËÚÂ Token."
+                    Description = "√Ç√¢√•√§√®√≤√• Token."
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement

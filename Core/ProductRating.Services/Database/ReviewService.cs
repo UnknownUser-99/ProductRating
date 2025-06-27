@@ -111,25 +111,5 @@ namespace ProductRating.Services.Database
 
             return result;
         }
-
-        public async Task<ReviewForRecognitionResult[]> GetReviewsForRecognitionAsync(int product, int count = 5)
-        {
-            var result = await (
-                from review in _context.Reviews
-                join user in _context.Users on review.User equals user.Id
-                where review.Product == product
-                orderby review.Date descending
-                select new ReviewForRecognitionResult
-                {
-                    User = user.Name,
-                    Rating = review.Rating,
-                    Description = review.Description,
-                    Date = DateOnly.FromDateTime(review.Date)
-                })
-                .Take(count)
-                .ToArrayAsync();
-
-            return result;
-        }
     }
 }

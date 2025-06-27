@@ -9,6 +9,5 @@ namespace ProductRating.Contracts.Database
         Task<ReviewRatingResult[]> GetReviewsForUpdateOverallRatingAsync();
         Task<ReviewRatingResult[]> GetReviewsForUpdateYearlyRatingAsync();
         Task<ReviewRatingResult[]> GetReviewsForUpdateMonthlyRatingAsync();
-        Task<ReviewForRecognitionResult[]> GetReviewsForRecognitionAsync(int product, int count = 5);
     }
 }

@@ -21,13 +21,5 @@ namespace ProductRating.Services.DTO
                 Reviews = groupedReviews
             };
         }
-
-        public ReviewsForRecognitionResult CreateReviewsForRecognitionResult(ReviewForRecognitionResult[] reviews)
-        {
-            return new ReviewsForRecognitionResult
-            {
-                Reviews = reviews
-            };
-        }
     }
 }

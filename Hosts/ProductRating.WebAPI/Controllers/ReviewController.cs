@@ -73,7 +73,7 @@ namespace ProductRating.WebAPI.Controllers
 
             return Ok(_reviewDTOService.CreateReviewsForUpdateRatingResult(result));
         }
-
+        
         [HttpGet("ReviewsForRecognition")]
         public async Task<IActionResult> GetReviewsForRecognition([FromQuery] int product)
         {
