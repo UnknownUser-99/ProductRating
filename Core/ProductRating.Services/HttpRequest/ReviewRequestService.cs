@@ -33,7 +33,7 @@ namespace ProductRating.Services.HttpRequest
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<ReviewsForRecognitionResult> GetReviewForRecognition(int product)
+        public async Task<ReviewsForRecognitionResult> GetReviewsForRecognitionAsync(int product)
         {
             var response = await _httpClient.GetAsync($"ReviewsForRecognition?product={product}");
 
@@ -43,6 +43,62 @@ namespace ProductRating.Services.HttpRequest
             }
 
             var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForRecognitionResult>();
+
+            return result;
+        }
+        
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
+
+            return result;
+        }
+
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateOverallRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateOverallRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
+
+            return result;
+        }
+
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateYearlyRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateYearlyRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
+
+            return result;
+        }
+
+        public async Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateMonthlyRatingAsync()
+        {
+            var response = await _httpClient.GetAsync("ReviewsForUpdateMonthlyRating");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var result = await response.Content.ReadFromJsonConfiguredAsync<ReviewsForUpdateRatingResult>();
 
             return result;
         }

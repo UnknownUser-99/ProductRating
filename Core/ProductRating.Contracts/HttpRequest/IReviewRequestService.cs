@@ -5,6 +5,10 @@ namespace ProductRating.Contracts.HttpRequest
     public interface IReviewRequestService
     {
         Task<bool> AddReviewAsync(int product, int rating, string description);
-        Task<ReviewsForRecognitionResult> GetReviewForRecognition(int product);
+        Task<ReviewsForRecognitionResult> GetReviewsForRecognitionAsync(int product);
+        Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateRatingAsync();
+        Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateOverallRatingAsync();
+        Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateYearlyRatingAsync();
+        Task<ReviewsForUpdateRatingResult> GetReviewsForUpdateMonthlyRatingAsync();
     }
 }

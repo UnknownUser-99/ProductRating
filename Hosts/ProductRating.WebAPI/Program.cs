@@ -22,8 +22,6 @@ namespace ProductRating.WebAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.WebHost.UseUrls("https://localhost:7066");
-
             builder.Services.Configure<ProductRecognitionServiceOptions>(builder.Configuration.GetSection("Configurations:ProductRecognitionService"));
             builder.Services.Configure<HashServiceOptions>(builder.Configuration.GetSection("Configurations:HashService"));
             builder.Services.Configure<JWTServiceOptions>(builder.Configuration.GetSection("Configurations:JWTService"));
@@ -44,6 +42,8 @@ namespace ProductRating.WebAPI
             builder.Services.AddScoped<IJWTService, JWTService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
+
+            builder.Services.AddScoped<IProductRatingService, ProductRatingService>();
             builder.Services.AddScoped<IReviewService, ReviewService>();
             builder.Services.AddScoped<IRecognitionHistoryService, RecognitionHistoryService>();
 
@@ -77,7 +77,7 @@ namespace ProductRating.WebAPI
                     In = ParameterLocation.Header,
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
-                    Description = "¬‚Â‰ËÚÂ Token."
+                    Description = "√Ç√¢√•√§√®√≤√• Token."
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement

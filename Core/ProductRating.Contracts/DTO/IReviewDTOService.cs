@@ -4,6 +4,6 @@ namespace ProductRating.Contracts.DTO
 {
     public interface IReviewDTOService
     {
-        ReviewsForRecognitionResult CreateReviewsForRecognitionResult(ReviewForRecognitionResult[] reviews);
+        ReviewsForUpdateRatingResult CreateReviewsForUpdateRatingResult(ReviewRatingResult[] reviews);
     }
 }

@@ -5,11 +5,20 @@ namespace ProductRating.Services.DTO
 {
     public class ReviewDTOService : IReviewDTOService
     {
-        public ReviewsForRecognitionResult CreateReviewsForRecognitionResult(ReviewForRecognitionResult[] reviews)
+        public ReviewsForUpdateRatingResult CreateReviewsForUpdateRatingResult(ReviewRatingResult[] reviews)
         {
-            return new ReviewsForRecognitionResult
+            var groupedReviews = reviews
+                .GroupBy(r => r.Product)
+                .Select(g => new ReviewForUpdateRatingResult
+                {
+                    Product = g.Key,
+                    Ratings = g.Select(r => r.Rating).ToArray()
+                })
+                .ToArray();
+
+            return new ReviewsForUpdateRatingResult
             {
-                Reviews = reviews
+                Reviews = groupedReviews
             };
         }
     }
