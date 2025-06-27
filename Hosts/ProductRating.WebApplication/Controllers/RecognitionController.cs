@@ -51,7 +51,7 @@ namespace ProductRating.WebApplication.Controllers
                     return PartialView(_options.MainView, _recognitionModelService.CreateRecognitionModel());
                 }
 
-                var reviewsResult = await _reviewRequestService.GetReviewForRecognition(recognitionResult.Product.Id);
+                var reviewsResult = await _reviewRequestService.GetReviewsForRecognitionAsync(recognitionResult.Product.Id);
 
                 return PartialView(_options.MainView, _recognitionModelService.CreateRecognitionModel(recognitionResult, _reviewModelService.CreateReviewModels(reviewsResult)));
             }

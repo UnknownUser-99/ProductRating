@@ -32,6 +32,86 @@ namespace ProductRating.Services.Database
             return review.Id;
         }
 
+        public async Task<ReviewRatingResult[]> GetReviewsForUpdateRatingAsync()
+        {
+            var result = await _context.Reviews
+                .Select(r => new ReviewRatingResult
+                {
+                    Product = r.Product,
+                    Rating = r.Rating
+                })
+                .ToArrayAsync();
+
+            return result;
+        }
+
+        public async Task<ReviewRatingResult[]> GetReviewsForUpdateOverallRatingAsync()
+        {
+            var yesterday = DateTime.UtcNow.AddDays(-1).Date;
+
+            var result = await _context.Reviews
+                .Where(r => _context.Reviews
+                    .Where(r2 => r2.Date >= yesterday && r2.Date < yesterday.AddDays(1))
+                    .Select(r2 => r2.Product)
+                    .Distinct()
+                    .Contains(r.Product)
+                )
+                .Select(r => new ReviewRatingResult
+                 {
+                     Product = r.Product,
+                     Rating = r.Rating
+                 })
+                .ToArrayAsync();
+
+            return result;
+        }
+
+        public async Task<ReviewRatingResult[]> GetReviewsForUpdateYearlyRatingAsync()
+        {
+            var today = DateTime.UtcNow;
+            var firstDayOfLastYear = new DateTime(today.Year - 1, 1, 1);
+            var lastDayOfLastYear = new DateTime(today.Year - 1, 12, 31);
+
+            var result = await _context.Reviews
+                .Where(r => _context.Reviews
+                    .Where(r2 => r2.Date >= firstDayOfLastYear && r2.Date <= lastDayOfLastYear)
+                    .Select(r2 => r2.Product)
+                    .Distinct()
+                    .Contains(r.Product)
+                )
+                .Select(r => new ReviewRatingResult
+                {
+                    Product = r.Product,
+                    Rating = r.Rating
+                })
+                .ToArrayAsync();
+
+            return result;
+        }
+
+        public async Task<ReviewRatingResult[]> GetReviewsForUpdateMonthlyRatingAsync()
+        {
+            var today = DateTime.UtcNow;
+            var firstDayOfLastMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+            var lastDayOfLastMonth = firstDayOfLastMonth.AddMonths(1).AddDays(-1);
+
+            var result = await _context.Reviews
+                .Where(r => _context.Reviews
+                    .Where(r2 => r2.Date >= firstDayOfLastMonth && r2.Date <= lastDayOfLastMonth)
+                    .Select(r2 => r2.Product)
+                    .Distinct()
+                    .Contains(r.Product)
+                )
+                .Select(r => new ReviewRatingResult
+                {
+                    Product = r.Product,
+                    Rating = r.Rating
+                })
+                .ToArrayAsync();
+
+            return result;
+        }
+
         public async Task<ReviewForRecognitionResult[]> GetReviewsForRecognitionAsync(int product, int count = 5)
         {
             var result = await (
